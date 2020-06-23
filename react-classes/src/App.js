@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { getNewTimestamp } from './helpers/dateTimeHelpers';
+
+export default class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      clickArray: [],
+    };
+  }
+  
+  handleClick = () => {
+    const newClickArray = Object.assign([], this.state.clickArray);
+    newClickArray.push(getNewTimestamp());
+    this.setState({ clickArray: newClickArray });
+  };
+
+  componentDidUpdate() {
+    document.title = this.state.clickArray.length.toString();
+  }
+
+  render() {
+    const { clickArray } = this.state;
+    return (
+      <div>
+        <h1>
+          React e <em>Class Component</em>
+        </h1>
+          
+        <button onClick={this.handleClick}>Clique aqui</button>
+
+        <ul>
+          {clickArray.map((item) => {
+            return <li key={item}>{item}</li>;
+          })}
+        </ul>
+      </div>
+    );
+  }
 }
-
-export default App;
